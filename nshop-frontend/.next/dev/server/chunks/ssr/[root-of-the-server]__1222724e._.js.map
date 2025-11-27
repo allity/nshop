@@ -1,0 +1,6 @@
+{
+  "version": 3,
+  "sources": [],
+  "sections": [
+    {"offset": {"line": 18, "column": 0}, "map": {"version":3,"sources":["file:///Users/inhwan/Documents/nshop/nshop-frontend/app/page.tsx"],"sourcesContent":["import Image from \"next/image\";\n\nexport default function Home() {\n  return (\n    <main className=\"min-h-screen flex items-center justify-center bg-slate-900\">\n      <h1 className=\"text-4xl font-bold text-indigo-400\">\n        Tailwind 4 잘 먹는 중 😎\n      </h1>\n    </main>\n  );\n}\n"],"names":[],"mappings":";;;;;;AAEe,SAAS;IACtB,qBACE,8OAAC;QAAK,WAAU;kBACd,cAAA,8OAAC;YAAG,WAAU;sBAAqC;;;;;;;;;;;AAKzD"}}]
+}
