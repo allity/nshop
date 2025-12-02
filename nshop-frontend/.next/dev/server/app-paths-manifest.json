@@ -1,5 +1,9 @@
 {
+  "/_not-found/page": "app/_not-found/page.js",
   "/admin/page": "app/admin/page.js",
-  "/page": "app/page.js",
-  "/products/[pid]/page": "app/products/[pid]/page.js"
+  "/admin/products/[pid]/edit/page": "app/admin/products/[pid]/edit/page.js",
+  "/admin/products/[pid]/page": "app/admin/products/[pid]/page.js",
+  "/admin/products/new/page": "app/admin/products/new/page.js",
+  "/admin/products/page": "app/admin/products/page.js",
+  "/page": "app/page.js"
 }

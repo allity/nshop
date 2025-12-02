@@ -7,19 +7,28 @@ import {
     Body,
     Put,
     Delete,
+    Query,
 } from '@nestjs/common';
 import { ProductsService } from './products.service';
 import { Product } from './product.entity';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
+import { FindProductDto } from './dto/find-product.dto';
 
 @Controller('products')
 export class ProductsController {
     constructor(private readonly productsService: ProductsService) {}
 
     @Get()
-    getAll(): Promise<Product[]> {
-        return this.productsService.findAll();
+    getAll(
+        @Query() query: FindProductDto,
+    ): Promise<{
+        items: Product[],
+        total: number;
+        page: number;
+        limit: number;
+    }> {
+        return this.productsService.findAll(query);
     }
 
     @Get(':pid')

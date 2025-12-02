@@ -1,0 +1,3 @@
+{
+  "/admin/products/[pid]/page": "app/admin/products/[pid]/page.js"
+}

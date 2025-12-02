@@ -4,6 +4,13 @@ import { Repository } from 'typeorm';
 import { Product } from './product.entity'
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
+import { FindProductDto } from './dto/find-product.dto';
+
+type FindAllParams = {
+    name?: string;
+    startDate?: string;
+    endDate?: string;
+}
 
 @Injectable()
 export class ProductsService {
@@ -12,8 +19,66 @@ export class ProductsService {
         private readonly productsRepo: Repository<Product>,
     ) {}
 
-    findAll(): Promise<Product[]> {
-        return this.productsRepo.find();
+    async findAll(
+        params: FindProductDto,
+    ): Promise<{
+        items: Product[];
+        total: number;
+        page: number;
+        limit: number;
+    }> {
+        const {
+            name,
+            startDate,
+            endDate,
+            sort = 'pid',
+            order = 'DESC',
+            page = 1,
+            limit = 20,
+        } = params;
+
+        const qb = this.productsRepo.createQueryBuilder('product');
+
+        if (name && name.trim() !== '') {
+            qb.andWhere('product.name LIKE :name', { name: `%${name.trim()}%` });
+        }
+
+        if (startDate) {
+            qb.andWhere('DATE(product.createdAt) >= :startDate', { startDate });
+        }
+
+        if (endDate) {
+            qb.andWhere('DATE(product.createdAt) <= :endDate', { endDate });
+        }
+
+        let sortField: string;
+        switch (sort) {
+            case 'name':
+                sortField = 'product.name';
+                break;
+            case 'createdAt':
+                sortField = 'product.createdAt';
+                break;
+            case 'pid':
+            default:
+                sortField = 'product.pid';
+                break;
+        }
+        const sortOrder = order === 'ASC' || order === 'DESC' ? order : 'DESC';
+        qb.orderBy(sortField, sortOrder);
+
+        const safeLimit = Math.min(Math.max(limit, 1), 100);
+        const safePage = Math.max(page, 1);
+        qb.skip((safePage - 1) * safeLimit).take(safeLimit);
+
+        const [items, total] = await qb.getManyAndCount();
+
+        return {
+            items,
+            total,
+            page: safePage,
+            limit: safeLimit,
+        }
     }
 
     findOne(pid: number): Promise<Product | null> {

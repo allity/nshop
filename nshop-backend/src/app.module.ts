@@ -14,6 +14,7 @@ import { ProductsModule } from './products/products.module';
       database: 'nshop',
       entities: [Product],
       synchronize: true,
+      logging: false,
     }),
     ProductsModule,
   ],
