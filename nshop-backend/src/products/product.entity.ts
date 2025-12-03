@@ -1,4 +1,5 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, ManyToOne, JoinColumn } from 'typeorm';
+import { Category } from '../categories/category.entity';
 
 @Entity()
 export class Product {
@@ -19,6 +20,16 @@ export class Product {
 
     @Column({ nullable: true })
     thumbnailUrl: string;
+
+    @ManyToOne(() => Category, (category) => category.products, {
+        onDelete: 'SET NULL',
+        nullable: true,
+    })
+    @JoinColumn({ name: 'cid' })
+    category: Category;
+
+    @Column({ nullable: true })
+    cid: number;
 
     @CreateDateColumn({ type: 'timestamp' })
     createdAt: Date;

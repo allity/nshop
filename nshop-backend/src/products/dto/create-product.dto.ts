@@ -21,4 +21,8 @@ export class CreateProductDto {
     @IsString()
     @IsUrl()
     thumbnailUrl?: string;
+
+    @IsInt()
+    @IsOptional()
+    cid?: number;
 }

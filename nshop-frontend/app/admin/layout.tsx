@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react';
 import Link from 'next/link'
+import AdminSidebar from './AdminSidebar';
 
 export default function AdminLayout({ children }: { children: ReactNode }) {
     return (
@@ -12,38 +13,7 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
                     </span>
                 </div>
 
-                <nav className="flex-1 px-4 py-4 space-y-1 text-sm">
-                    <Link
-                        href="/admin"
-                        className="block px-3 py-2 rounded-lg font-medium hover:bg-slate-800"
-                    >
-                        대시보드
-                    </Link>
-                    <Link
-                        href="/admin/products"
-                        className="block px-3 py-2 rounded-lg font-medium hover:bg-slate-800"
-                    >
-                        상품 관리
-                    </Link>
-                    <Link
-                        href="/admin/orders"
-                        className="block px-3 py-2 rounded-lg font-medium hover:bg-slate-800"
-                    >
-                        주문 관리
-                    </Link>
-                    <Link
-                        href="/admin/customers"
-                        className="block px-3 py-2 rounded-lg font-medium hover:bg-slate-800"
-                    >
-                        고객 관리
-                    </Link>
-                    <Link
-                        href="/admin/settings"
-                        className="block px-3 py-2 rounded-lg font-medium hover:bg-slate-800"
-                    >
-                        설정
-                    </Link>
-                </nav>
+                <AdminSidebar />
                 <div className="px-4 py-4 border-t border-slate-800 text-xs text-slate-400">
                     © {new Date().getFullYear()} nshop
                 </div>

@@ -26,6 +26,7 @@ export default function AdminProductCreatePage() {
                     price: values.price,
                     stock: values.stock,
                     thumbnailUrl: values.thumbnailUrl || null,
+                    cid: values.cid || null,
                 }),
             });
 

@@ -14,6 +14,7 @@ type Product = {
     stock: number;
     thumbnailUrl?: string | null;
     createdAt: string;
+    cid?: number | null;
 };
 
 export default function AdminProductEditPage() {
@@ -134,6 +135,7 @@ export default function AdminProductEditPage() {
                     price: initialProduct.price,
                     stock: initialProduct.stock,
                     thumbnailUrl: initialProduct.thumbnailUrl ?? '',
+                    cid: initialProduct.cid ?? null,
                 }}
                 onSubmit={handleSubmit}
                 onCancel={() => router.push(`/admin/products/${pid}`)}

@@ -3,12 +3,15 @@
 
 import { useState, useEffect } from 'react';
 
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL!;
+
 export type ProductFormValues = {
     name: string;
     price: number;
     stock: number;
     thumbnailUrl: string;
     description: string;
+    cid: number | null;
 };
 
 type ProductFormProps = {
@@ -18,6 +21,11 @@ type ProductFormProps = {
     error: string | null;
     onSubmit: (values: ProductFormValues) => void;
     onCancel: () => void;
+};
+
+type CategoryOption = {
+    cid: number;
+    name: string;
 };
 
 export default function ProductForm({
@@ -34,6 +42,10 @@ export default function ProductForm({
     const [thumbnailUrl, setThumbnailUrl] = useState('');
     const [description, setDescription] = useState('');
 
+    const [cid, setCid] = useState('');
+    const [categories, setCategories] = useState<CategoryOption[]>([]);
+    const [catLoading, setCatLoading] = useState(true);
+
     // 초기값 세팅 (수정 모드일 때 기존 데이터 들어오면 폼에 세팅)
     useEffect(() => {
         if (initialValues) {
@@ -42,8 +54,26 @@ export default function ProductForm({
             if (typeof initialValues.stock === 'number') setStock(String(initialValues.stock));
             if (typeof initialValues.thumbnailUrl === 'string') setThumbnailUrl(initialValues.thumbnailUrl);
             if (initialValues.description) setDescription(initialValues.description);
+            if (typeof initialValues.cid === 'number') setCid(String(initialValues.cid));
         }
     }, [initialValues]);
+
+    useEffect(() => {
+        const fetchCategories = async () => {
+            try {
+                const res = await fetch(`${API_BASE_URL}/categories`);
+                if (!res.ok) throw new Error('카테고리 조회 실패');
+                const data: CategoryOption[] = await res.json();
+                setCategories(data);
+            } catch (e) {
+                console.error('카테고리 목록 조회 실패', e);
+            } finally {
+                setCatLoading(false);
+            }
+        };
+
+        fetchCategories();
+    }, []);
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
@@ -78,12 +108,21 @@ export default function ProductForm({
             return;
         }
 
+        let cidNum: number | null = null;
+        if (cid) {
+            const parsed = Number(cid);
+            if (!Number.isNaN(parsed)) {
+                cidNum = parsed;
+            }
+        }
+
         onSubmit({
             name: name.trim(),
             price: priceNum,
             stock: stockNum,
             thumbnailUrl: thumbnailUrl.trim(),
             description: description.trim(),
+            cid: cidNum,
         });
     };
 
@@ -151,6 +190,30 @@ export default function ProductForm({
                         <p className="text-[11px] text-slate-400">
                             이미지 업로드 대신 URL만 사용합니다.
                         </p>
+                    </div>
+
+                    {/* 🔹 카테고리 선택 */}
+                    <div className="flex flex-col gap-1">
+                        <label className="text-xs font-medium text-slate-600">
+                            카테고리
+                        </label>
+                        <select
+                            value={cid}
+                            onChange={(e) => setCid(e.target.value)}
+                            className="h-11 w-full rounded-lg border border-slate-200 px-3 text-sm outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 bg-white"
+                        >
+                            <option value="">선택 안 함</option>
+                            {categories.map((c) => (
+                                <option key={c.cid} value={c.cid}>
+                                    {c.name}
+                                </option>
+                            ))}
+                        </select>
+                        {catLoading && (
+                            <p className="text-[11px] text-slate-400">
+                                카테고리를 불러오는 중입니다...
+                            </p>
+                        )}
                     </div>
                 </div>
 
