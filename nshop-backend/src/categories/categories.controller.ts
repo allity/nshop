@@ -1,15 +1,21 @@
 import { Controller, Get, Post, Put, Delete, Param, ParseIntPipe, Body } from '@nestjs/common';
+import { Category } from './category.entity';
 import { CategoriesService } from './categories.service';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
 
 @Controller('categories')
 export class CategoriesController {
-    constructor(private readonly categoriesService: CategoriesService) {}
+    constructor(private readonly categoriesService: CategoriesService) { }
 
     @Get()
     findAll() {
         return this.categoriesService.findAll();
+    }
+
+    @Get(':cid')
+    findOne(@Param('cid', ParseIntPipe) cid: number): Promise<Category | null> {
+        return this.categoriesService.findOne(cid);
     }
 
     @Post()

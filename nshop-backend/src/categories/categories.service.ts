@@ -10,12 +10,17 @@ export class CategoriesService {
     constructor(
         @InjectRepository(Category)
         private categoriesRepo: Repository<Category>,
-    ) {}
+    ) { }
 
     findAll(): Promise<Category[]> {
         return this.categoriesRepo.find({
-            order: {sortOrder: 'ASC', cid: 'ASC' },
+            order: { sortOrder: 'ASC', cid: 'ASC' },
         });
+    }
+
+    findOne(cid: number): Promise<Category | null> {
+        console.log(cid);
+        return this.categoriesRepo.findOne({ where: { cid } });
     }
 
     async create(dto: CreateCategoryDto): Promise<Category> {
@@ -24,7 +29,7 @@ export class CategoriesService {
     }
 
     async update(cid: number, dto: UpdateCategoryDto): Promise<Category> {
-        const cat = await this.categoriesRepo.findOne({ where: { cid }});
+        const cat = await this.categoriesRepo.findOne({ where: { cid } });
         if (!cat) throw new NotFoundException('Category not found');
 
         const updated = { ...cat, ...dto };

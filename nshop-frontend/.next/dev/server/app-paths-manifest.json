@@ -1,5 +1,5 @@
 {
-  "/admin/categories/[cid]/edit/page": "app/admin/categories/[cid]/edit/page.js",
+  "/_not-found/page": "app/_not-found/page.js",
   "/admin/categories/new/page": "app/admin/categories/new/page.js",
   "/admin/categories/page": "app/admin/categories/page.js",
   "/admin/page": "app/admin/page.js",
@@ -7,5 +7,9 @@
   "/admin/products/[pid]/page": "app/admin/products/[pid]/page.js",
   "/admin/products/new/page": "app/admin/products/new/page.js",
   "/admin/products/page": "app/admin/products/page.js",
-  "/page": "app/page.js"
+  "/page": "app/page.js",
+  "/shop/categories/[cid]/page": "app/shop/categories/[cid]/page.js",
+  "/shop/login/page": "app/shop/login/page.js",
+  "/shop/page": "app/shop/page.js",
+  "/shop/products/[pid]/page": "app/shop/products/[pid]/page.js"
 }

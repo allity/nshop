@@ -10,6 +10,7 @@ type FindAllParams = {
     name?: string;
     startDate?: string;
     endDate?: string;
+    cid?: number;
 }
 
 @Injectable()
@@ -35,6 +36,7 @@ export class ProductsService {
             order = 'DESC',
             page = 1,
             limit = 20,
+            cid,
         } = params;
 
         const qb = this.productsRepo.createQueryBuilder('product');
@@ -49,6 +51,10 @@ export class ProductsService {
 
         if (endDate) {
             qb.andWhere('DATE(product.createdAt) <= :endDate', { endDate });
+        }
+
+        if (cid) {
+            qb.andWhere('product.cid = :cid', { cid });
         }
 
         let sortField: string;
